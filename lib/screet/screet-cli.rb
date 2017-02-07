@@ -1,6 +1,6 @@
 class ScreetCLI
 
-  attr_accessor :user
+  attr_accessor :user, :tweet
 
   def initialize
     puts " "
@@ -34,15 +34,38 @@ class ScreetCLI
     elsif answer == "SIMILAR"
       self.user.similar_users
     elsif answer.to_i > 0
-      # puts self.user.tweets[answer.to_i]
       display_tweet(answer.to_i)
     end
   end
 
-  def display_tweet(tweet_number)
-    puts "On #{self.user.tweets[tweet_number].date}, #{self.user.tweets[tweet_number].date} wrote:"
-    puts "#{self.user.tweets[tweet_number].content}"
-
+  def display_tweet(index)
+    tweet_number = index-1
+    @tweet = self.user.tweets[tweet_number]
+    puts "On #{tweet.date}, at approximately #{tweet.time} #{tweet.user_name} wrote:"
+    puts "'#{tweet.content}'"
+    puts "#{tweet.retweets} people retweeted this tweet."
+    puts "#{tweet.likes} people liked it."
+    tweet_options
   end
+
+  def tweet_options
+    puts "To view some of the replies to this tweet, type 'replies'"
+    puts "To see more tweets from this user, type 'more'"
+    puts "To check out a different user's tweets, type 'new'"
+    tweet_response
+  end
+
+  def tweet_response
+    answer = gets.strip.upcase
+    if answer == "REPLIES"
+      replies
+    end
+  end
+
+  def replies
+    self.tweet.replies
+  end
+
+
 
 end

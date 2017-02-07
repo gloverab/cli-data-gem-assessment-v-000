@@ -23,7 +23,7 @@ class TwitterUser
     user = self
     author_name = self.username
     counter = self.counter
-    path = self.doc.css('.js-stream-tweet')[0].values[3]
+    path = self.doc.css('.js-stream-tweet')[counter].values[3]
     url = "https://www.twitter.com#{path}"
     self.tweets << Tweet.new(url, user)
   end
