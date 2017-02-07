@@ -1,5 +1,7 @@
 class ScreetCLI
 
+  attr_accessor :user
+
   def initialize
     puts " "
     puts "************ | SCREET v0.1 | ************"
@@ -17,7 +19,23 @@ class ScreetCLI
     puts "\nNow, please enter either a username."
     puts "There's no need to put the '@' sign."
     puts "(ex. 'beyonce' or 'timheidecker')"
-    TwitterUser.new(gets.strip)
+    @user = TwitterUser.new(gets.strip)
+    self.user.show_five
+    give_options
+  end
+
+  def give_options
+    puts "-To see more tweets, type 'more.'"
+    puts "-To see a list of similar twitter users, type 'similar.'"
+    puts "-To see who responded to these tweets, type the number of the tweet you'd like more info on."
+    answer = gets.strip.upcase
+    if answer == "MORE"
+      self.user.five_more
+    elsif answer == "SIMILAR"
+      self.user.similar_users
+    elsif answer.to_i.is_a?(Integer)
+      puts "fuck off"
+    end
   end
 
 end
