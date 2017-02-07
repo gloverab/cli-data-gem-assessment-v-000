@@ -1,14 +1,16 @@
-require 'open-uri'
-require 'pry'
+require_relative '../../config/environment.rb'
 
 class TwitterUser
-  attr_accessor :doc, :profile_name, :counter
+  attr_accessor :username, :doc, :profile_name, :counter
+
+  @@tweets = []
 
   def initialize(username)
-    html = Kernel.open("https://twitter.com/#{username}")
+    html = open("https://twitter.com/#{username}")
     @doc = Nokogiri::HTML(html)
+    @username = username
     @profile_name = @doc.css('.ProfileHeaderCard-nameLink').text.strip
-    @counter = 0
+    get_tweet
     show_five
   end
 
@@ -29,19 +31,30 @@ class TwitterUser
 
   def show_five
     puts "\n#{self.profile_name.upcase}'S MOST RECENT TWEETS:\n"
+    @counter = 0
     until self.counter == 5
       tweet
+      # get_tweet
       self.counter += 1
     end
-
     give_options
   end
 
+  def get_tweet
+    user = self
+    author_name = self.username
+    counter = self.counter
+    path = self.doc.css('.js-stream-tweet')[0].values[3]
+    url = "https://www.twitter.com#{path}"
+    Tweet.new(url, user)
+  end
+
   def five_more
-    this_counter = @counter + 5
-    until self.counter == this_counter
+    this_counter = counter + 5
+    until counter == this_counter
       tweet
       self.counter += 1
+      @@tweets << tweet
     end
     give_options
   end
