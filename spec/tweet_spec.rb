@@ -12,7 +12,7 @@ describe "Tweet" do
       expect(tweet.user_name).to eq("whoisMGMT")
       expect(tweet.date).to eq("7:50 PM - 13 Jan 2017")
       expect(tweet.retweets).to eq("1,619")
-      expect(tweet.likes).to eq("3,283")
+      expect(tweet.likes).to eq("3,284")
 
       expect(tweet.user).to eq(nil)
     end

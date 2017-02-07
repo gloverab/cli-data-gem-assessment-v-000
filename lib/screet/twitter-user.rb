@@ -1,19 +1,18 @@
 require_relative '../../config/environment.rb'
 
 class TwitterUser
-  attr_accessor :username, :doc, :profile_name, :counter
-
-  @@tweets = []
+  attr_accessor :username, :doc, :display_name, :counter, :tweets
 
   def initialize(username)
     html = open("https://twitter.com/#{username}")
     @doc = Nokogiri::HTML(html)
     @username = username
-    @profile_name = @doc.css('.ProfileHeaderCard-nameLink').text.strip
+    @display_name = @doc.css('.ProfileHeaderCard-nameLink').text.strip
+    @tweets = []
   end
 
   def show_five
-    puts "\n#{self.profile_name.upcase}'S MOST RECENT TWEETS:\n"
+    puts "\n#{self.display_name.upcase}'S MOST RECENT TWEETS:\n"
     @counter = 0
     until self.counter == 5
       tweet_cycle
@@ -26,7 +25,7 @@ class TwitterUser
     counter = self.counter
     path = self.doc.css('.js-stream-tweet')[0].values[3]
     url = "https://www.twitter.com#{path}"
-    @@tweets << Tweet.new(url, user)
+    self.tweets << Tweet.new(url, user)
   end
 
   def five_more
@@ -49,7 +48,9 @@ class TwitterUser
   end
 
   def similar_users
-
+    binding.pry
+    display_name = self.doc.css('.related-users .fullname')[0].text
+    user_name = self.doc.css('.related-users .username')[0].text
   end
 
 end

@@ -27,15 +27,22 @@ class ScreetCLI
   def give_options
     puts "-To see more tweets, type 'more.'"
     puts "-To see a list of similar twitter users, type 'similar.'"
-    puts "-To see who responded to these tweets, type the number of the tweet you'd like more info on."
+    puts "-To learn more about a tweet, simply type the number of the tweet you'd like to learn about."
     answer = gets.strip.upcase
     if answer == "MORE"
       self.user.five_more
     elsif answer == "SIMILAR"
       self.user.similar_users
-    elsif answer.to_i.is_a?(Integer)
-      puts "fuck off"
+    elsif answer.to_i > 0
+      # puts self.user.tweets[answer.to_i]
+      display_tweet(answer.to_i)
     end
+  end
+
+  def display_tweet(tweet_number)
+    puts "On #{self.user.tweets[tweet_number].date}, #{self.user.tweets[tweet_number].date} wrote:"
+    puts "#{self.user.tweets[tweet_number].content}"
+
   end
 
 end

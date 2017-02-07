@@ -1,7 +1,7 @@
 require_relative '../../config/environment.rb'
 
 class Tweet
-  attr_accessor :url, :user, :user_name, :counter, :content, :date, :replies, :favorites
+  attr_accessor :url, :user, :display_name, :user_name, :counter, :content, :date, :replies, :favorites
 
   attr_reader :retweets, :likes
 
@@ -11,7 +11,7 @@ class Tweet
     @url = url
     @user = user
     @content = doc.css('.js-tweet-text-container p')[0].text
-    #binding.pry
+    @display_name = doc.css('.permalink-header fullname').text
     @user_name = doc.css('.js-action-profile-name b')[0].text.strip
     @date = doc.css('.client-and-actions').text.strip
     @replies = []
