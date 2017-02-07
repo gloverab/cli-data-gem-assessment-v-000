@@ -12,15 +12,6 @@ class TwitterUser
     show_five
   end
 
-  def show_five
-    puts "\n#{self.profile_name.upcase}'S MOST RECENT TWEETS:\n"
-    until @counter == 5
-      puts "#{(counter + 1).to_s}. #{self.doc.css('.time')[0].text.strip} -- #{self.doc.css('.stream p')[counter].text}\n"
-      puts " "
-      @counter += 1
-    end
-    give_options
-  end
 
   def give_options
     puts "-To see more tweets, type 'more.'"
@@ -36,8 +27,27 @@ class TwitterUser
     end
   end
 
-  def five_more
+  def show_five
+    puts "\n#{self.profile_name.upcase}'S MOST RECENT TWEETS:\n"
+    until @counter == 5
+      tweet
+      @counter += 1
+    end
+    give_options
+  end
 
+  def five_more
+    this_counter = @counter +5
+    until @counter == this_counter
+      tweet
+      @counter += 1
+    end
+    give_options
+  end
+
+  def tweet
+    puts "#{(counter + 1).to_s}. #{self.doc.css('.time')[0].text.strip} -- #{self.doc.css('.stream p')[counter].text}\n"
+    puts " "
   end
 
   def similar_users
