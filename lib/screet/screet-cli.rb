@@ -31,8 +31,9 @@ class ScreetCLI
     answer = gets.strip.upcase
     if answer == "MORE"
       self.user.five_more
-    elsif answer == "SIMILAR"
-      self.user.similar_users
+      give_options
+    # elsif answer == "SIMILAR"
+    #   self.user.similar_users
     elsif answer.to_i > 0
       display_tweet(answer.to_i)
     end
@@ -41,10 +42,14 @@ class ScreetCLI
   def display_tweet(index)
     tweet_number = index-1
     @tweet = self.user.tweets[tweet_number]
+    puts "--"
     puts "On #{tweet.date}, at approximately #{tweet.time} #{tweet.user_name} wrote:"
     puts "'#{tweet.content}'"
-    puts "#{tweet.retweets} people retweeted this tweet."
+    puts "**"
+    puts "#{tweet.reply_count} people replied to this tweet."
+    puts "#{tweet.retweets} people retweeted."
     puts "#{tweet.likes} people liked it."
+    puts "--"
     tweet_options
   end
 
@@ -52,20 +57,31 @@ class ScreetCLI
     puts "To view some of the replies to this tweet, type 'replies'"
     puts "To see more tweets from this user, type 'more'"
     puts "To check out a different user's tweets, type 'new'"
+    set_replies
     tweet_response
+  end
+
+  def set_replies
+    self.tweet.set_replies
   end
 
   def tweet_response
     answer = gets.strip.upcase
     if answer == "REPLIES"
-      replies
+      show_replies
+    elsif answer == "BACK"
+      self.user.redisplay
+      give_options
     end
   end
 
-  def replies
-    self.tweet.replies
+  def show_replies
+    self.tweet.replies.each do |reply|
+      puts "#{reply.content}\n"
+    end
+    puts "--"
+    puts "type 'back' to redisplay #{self.user.user_name}'s tweets"
+    tweet_response
   end
-
-
 
 end
