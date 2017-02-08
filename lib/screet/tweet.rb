@@ -60,7 +60,7 @@ class Tweet
   def set_replies
     # The code snippet in "reply_count" reads off the number of replies that there are, then would have helped this method loop for exactly that many times. Sadly, twitter only displays 15 replies to ruby, so I had to settle for a 15-iteration loop. So now the method just checks to see if the reply count is UNDER 15.
 
-    (reply_count < 15 ? reply_count : 15).times do
+    (reply_count <= 14 ? reply_count : 15).times do
       parent_tweet = self
       self.replies << Reply.new(self.reply_counter, parent_tweet)
       @reply_counter += 1

@@ -40,7 +40,7 @@ class TwitterUser
   end
 
   def tweet
-    puts "#{(self.counter + 1).to_s}. #{self.doc.css('.time')[counter].text.strip} -#{"**RETWEET**" if tweets[counter].retweeted?}- #{self.doc.css('.stream p')[counter].text}\n"
+    puts "#{(self.counter + 1).to_s}. #{self.doc.css('.time')[counter].text.strip} -#{"**RETWEET**" if tweets[counter].retweeted?}- #{self.doc.css('.js-tweet-text-container p')[counter].text}\n"
     puts " "
   end
 
