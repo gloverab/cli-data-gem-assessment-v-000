@@ -7,16 +7,16 @@ class ScreetCLI
     puts "************ | TWITERATOR v0.02 | ************"
     puts "\nHi there! I'm Twiterator, a Ruby cli scraper for"
     puts "the popular social networking site, Twitter."
-    puts "You can type in any username at all, and"
-    puts "I will display that user's basic info"
-    puts "along with their most recent tweets."
-    puts "From there, you'll be able to dive into each tweet"
-    puts "and play around until your thirst for tweet-knowledge is quenched."
+    puts "You can type in any username at all, and I will"
+    puts "display that user's basic info along with their most"
+    puts "recent tweets. From there, you'll be able to dive into"
+    puts "each tweet and play around until your thirst for"
+    puts "knowledge of the twitterverse is quenched."
     new_user_menu
   end
 
   def new_user_menu
-    puts "\nNow, please enter either a username."
+    puts "\nNow, please enter a username."
     puts "There's no need to put the '@' sign, but I won't complain if you do."
     puts "(ex. 'realcarrotfacts' or 'kanyewest')"
     @user = TwitterUser.new(gets.strip)
@@ -24,12 +24,18 @@ class ScreetCLI
   end
 
   def display_profile
-    puts "#{self.user.display_name.upcase}"
+    puts " "
+    puts "#{self.user.display_name.upcase} - @#{self.user.user_name}"
     puts "#{self.user.following_count}"
     puts "#{self.user.follower_count}"
     puts " "
-    self.user.show_five
-    give_options
+    if self.user.private?
+      puts "Out of respect for this user's privacy, I'm not willing to display their tweets at this time."
+      new_user_menu
+    else
+      self.user.show_five
+      give_options
+    end
   end
 
   def give_options

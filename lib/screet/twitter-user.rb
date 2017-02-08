@@ -1,5 +1,3 @@
-require_relative '../../config/environment.rb'
-
 class TwitterUser
   attr_accessor :user_name, :doc, :display_name, :counter, :tweets
 
@@ -9,6 +7,11 @@ class TwitterUser
     @user_name = user_name
     @display_name = @doc.css('.ProfileHeaderCard-nameLink').text.strip
     @tweets = []
+    private?
+  end
+
+  def private?
+    self.doc.css('.ProtectedTimeline h2').text == "This account's Tweets are protected." || false
   end
 
   def follower_count
