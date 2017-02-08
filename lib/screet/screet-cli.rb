@@ -4,7 +4,7 @@ class ScreetCLI
 
   def initialize
     puts " "
-    puts "************ | SCREET v0.1 | ************"
+    puts "************ | TWITERATOR v0.1 | ************"
     puts "\nHi there! I'm Screet, a Ruby cli scraper for"
     puts "the popular social networking site, Twitter."
     puts "You can type in any username at all"
@@ -26,26 +26,18 @@ class ScreetCLI
 
   def give_options
     puts "-To see more tweets, type 'more.'"
-    puts "-To see a list of similar twitter users, type 'similar.'"
+    puts "-To check out a different user's tweets, type 'new'"
     puts "-To learn more about a tweet, simply type the number of the tweet you'd like to learn about."
-    answer = gets.strip.upcase
-    if answer == "MORE"
-      self.user.five_more
-      give_options
-    # elsif answer == "SIMILAR"
-    #   self.user.similar_users
-    elsif answer.to_i > 0
-      display_tweet(answer.to_i)
-    end
+    options_response
   end
 
   def display_tweet(index)
     tweet_number = index-1
     @tweet = self.user.tweets[tweet_number]
-    puts "--"
+    puts "-------------"
     puts "On #{tweet.date}, at approximately #{tweet.time} #{tweet.user_name} wrote:"
     puts "'#{tweet.content}'"
-    puts "**"
+    puts "-----"
     puts "#{tweet.reply_count} people replied to this tweet."
     puts "#{tweet.retweets} people retweeted."
     puts "#{tweet.likes} people liked it."
@@ -65,10 +57,25 @@ class ScreetCLI
     self.tweet.set_replies
   end
 
+  def options_response
+    answer = gets.strip.upcase
+    if answer == "MORE"
+      self.user.five_more
+      give_options
+    elsif answer == "NEW"
+      what_user
+    elsif answer.to_i > 0
+      display_tweet(answer.to_i)
+    end
+  end
+
   def tweet_response
     answer = gets.strip.upcase
     if answer == "REPLIES"
       show_replies
+    elsif answer == "MORE"
+      self.user.five_more
+      give_options
     elsif answer == "BACK"
       self.user.redisplay
       give_options
@@ -81,7 +88,7 @@ class ScreetCLI
     self.tweet.replies.each do |reply|
       puts "#{reply.content}\n"
     end
-    puts "--"
+    puts "---"
     puts "To redisplay #{self.user.user_name}'s tweets, type 'back'"
     puts "OR"
     puts "To search for a new tweeter, type 'new'"

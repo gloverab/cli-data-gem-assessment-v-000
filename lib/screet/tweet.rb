@@ -18,7 +18,6 @@ class Tweet
     @replies = []
     # @retweets = doc.css('.request-retweeted-popup strong').text
     # @likes = doc.css('.js-stat-favorites strong').text
-    @reply_counter = 0
   end
 
   def content
@@ -50,7 +49,7 @@ class Tweet
   end
 
   def reply_count
-    self.doc.css('.js-original-tweet .ProfileTweet-actionCount')[3].text.strip.to_i
+    self.doc.css('.ProfileTweet-actionCount')[0].text.strip.gsub(/[^0-9,.]/, "").to_i
   end
 
   def retweeted?
@@ -58,13 +57,15 @@ class Tweet
   end
 
   def set_replies
+    reply_counter = 0
+    #binding.pry
     # The code snippet in "reply_count" reads off the number of replies that there are, then would have helped this method loop for exactly that many times. Sadly, twitter only displays 15 replies to ruby, so I had to settle for a 15-iteration loop. So now the method just checks to see if the reply count is UNDER 15.
-
-    (reply_count <= 14 ? reply_count : 15).times do
-      parent_tweet = self
-      self.replies << Reply.new(self.reply_counter, parent_tweet)
-      @reply_counter += 1
-    end
+    (reply_count < 15 ? reply_count : 15).times do
+        parent_tweet = self
+        self.replies << Reply.new(reply_counter, parent_tweet)
+        reply_counter += 1
+      end
+    self.replies.pop
   end
 
 end
