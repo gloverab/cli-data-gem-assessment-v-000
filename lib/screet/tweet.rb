@@ -49,7 +49,7 @@ class Tweet
   end
 
   def reply_count
-    self.doc.css('.ProfileTweet-actionCount')[0].text.strip.gsub(/[^0-9,.]/, "").to_i
+    self.doc.css('.ProfileTweet-actionCount')[0].text.strip.gsub(/[^0-9]/, "").to_i
   end
 
   def retweeted?

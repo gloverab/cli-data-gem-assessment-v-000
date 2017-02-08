@@ -5,7 +5,7 @@ class ScreetCLI
   def initialize
     puts " "
     puts "************ | TWITERATOR v0.1 | ************"
-    puts "\nHi there! I'm Screet, a Ruby cli scraper for"
+    puts "\nHi there! I'm Twiterator, a Ruby cli scraper for"
     puts "the popular social networking site, Twitter."
     puts "You can type in any username at all"
     puts "and I will display that user's most recent tweets."
@@ -85,8 +85,8 @@ class ScreetCLI
   end
 
   def show_replies
-    self.tweet.replies.each do |reply|
-      puts "#{reply.content}\n"
+    self.tweet.replies.each_with_index do |reply, index|
+      puts "#{index+1}. #{reply.content}\n"
     end
     puts "---"
     puts "To redisplay #{self.user.user_name}'s tweets, type 'back'"
