@@ -11,8 +11,15 @@ class TwitterUser
     @tweets = []
   end
 
+  def follower_count
+    self.doc.css('.ProfileNav-item--followers a')[0].attr('title')
+  end
+
+  def following_count
+    self.doc.css('.ProfileNav-item--following a')[0].attr('title')
+  end
+
   def show_five
-    puts "\n#{self.display_name.upcase}'S MOST RECENT TWEETS:\n"
     @counter = 0
     until self.counter == 5
       tweet_cycle

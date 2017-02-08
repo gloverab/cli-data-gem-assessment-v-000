@@ -4,28 +4,36 @@ class ScreetCLI
 
   def initialize
     puts " "
-    puts "************ | TWITERATOR v0.1 | ************"
+    puts "************ | TWITERATOR v0.02 | ************"
     puts "\nHi there! I'm Twiterator, a Ruby cli scraper for"
     puts "the popular social networking site, Twitter."
-    puts "You can type in any username at all"
-    puts "and I will display that user's most recent tweets."
-    puts "From there, you'll be able to view that user's"
-    puts "followers, who they're following, and see the"
-    puts "replies, retweets, and likes for each inidividual tweet."
-    what_user
+    puts "You can type in any username at all, and"
+    puts "I will display that user's basic info"
+    puts "along with their most recent tweets."
+    puts "From there, you'll be able to dive into each tweet"
+    puts "and play around until your thirst for tweet-knowledge is quenched."
+    new_user_menu
   end
 
-  def what_user
+  def new_user_menu
     puts "\nNow, please enter either a username."
-    puts "There's no need to put the '@' sign."
-    puts "(ex. 'tameimpala' or 'deadmau5')"
+    puts "There's no need to put the '@' sign, but I won't complain if you do."
+    puts "(ex. 'realcarrotfacts' or 'kanyewest')"
     @user = TwitterUser.new(gets.strip)
+    display_profile
+  end
+
+  def display_profile
+    puts "#{self.user.display_name.upcase}"
+    puts "#{self.user.following_count}"
+    puts "#{self.user.follower_count}"
+    puts " "
     self.user.show_five
     give_options
   end
 
   def give_options
-    puts "-To see more tweets, type 'more.'"
+    puts "-To see more of #{self.user.display_name}'s tweets, type 'more.'"
     puts "-To check out a different user's tweets, type 'new'"
     puts "-To learn more about a tweet, simply type the number of the tweet you'd like to learn about."
     options_response
@@ -47,7 +55,7 @@ class ScreetCLI
 
   def tweet_options
     puts "To view some of the replies to this tweet, type 'replies'"
-    puts "To see more tweets from this user, type 'more'"
+    puts "To see more tweets from #{self.user.display_name}, type 'more'"
     puts "To check out a different user's tweets, type 'new'"
     set_replies
     tweet_response
@@ -63,7 +71,7 @@ class ScreetCLI
       self.user.five_more
       give_options
     elsif answer == "NEW"
-      what_user
+      new_user_menu
     elsif answer.to_i > 0
       display_tweet(answer.to_i)
     end
@@ -80,7 +88,9 @@ class ScreetCLI
       self.user.redisplay
       give_options
     elsif answer == "NEW"
-      what_user
+      new_user_menu
+    elsif answer.to_i > 0
+      display_tweet(answer.to_i)
     end
   end
 
@@ -89,7 +99,7 @@ class ScreetCLI
       puts "#{index+1}. #{reply.content}\n"
     end
     puts "---"
-    puts "To redisplay #{self.user.user_name}'s tweets, type 'back'"
+    puts "To redisplay #{self.user.display_name}'s tweets, type 'back'"
     puts "OR"
     puts "To search for a new tweeter, type 'new'"
     tweet_response
