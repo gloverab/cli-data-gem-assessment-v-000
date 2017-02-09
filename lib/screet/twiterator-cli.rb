@@ -1,6 +1,6 @@
 class ScreetCLI
 
-  attr_accessor :user, :tweet
+  attr_accessor :doc, :user, :tweet
 
   def initialize
     puts " "
@@ -19,8 +19,44 @@ class ScreetCLI
     puts "\nNow, please enter a username."
     puts "There's no need to put the '@' sign, but I won't complain if you do."
     puts "(ex. 'realcarrotfacts' or 'kanyewest')"
-    @user = User.new(gets.strip)
+    user = gets.chomp
+    if not_verified(user)
+      search_possible(user)
+      display_possible
+      new_user_menu
+    else
+      @user = User.new(user)
+    end
     display_profile
+  end
+
+  def not_verified(user)
+    new_verify = Verification.new(user)
+    new_verify.verify == false
+  end
+
+  def search_possible(user)
+    formatted_user = user.gsub(' ', '%20')
+    html = open("https://twitter.com/search?f=users&q=#{formatted_user}&src=typd")
+    @doc = Nokogiri::HTML(html)
+  end
+
+  def display_possible
+    counter = 0
+    puts " "
+    puts "Hmm, that's not a username, but here are some users you might have been looking for:"
+    puts "-"
+    until (self.doc.css('.js-action-profile-name')[counter] == nil) || (counter == 4) do
+
+      display_name = self.doc.css('.js-action-profile-name')[counter].text.strip
+      user_name = self.doc.css('.ProfileCard-screenname')[counter].text.strip
+      bio = self.doc.css('.ProfileCard-bio')[counter].text.strip
+
+      puts "For #{display_name.upcase}, type '#{user_name}'"
+      puts bio
+      puts " "
+      counter +=1
+    end
   end
 
   def display_profile
