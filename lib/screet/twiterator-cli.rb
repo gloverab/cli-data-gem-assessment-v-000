@@ -16,9 +16,8 @@ class ScreetCLI
   end
 
   def new_user_menu
-    puts "\nNow, please enter a username."
-    puts "There's no need to put the '@' sign, but I won't complain if you do."
-    puts "(ex. 'realcarrotfacts' or 'kanyewest')"
+    puts "\nPlease enter a username or search for the user you're thinking of."
+    puts "(ex. 'kanyewest' or 'President of Mexico')"
     user = gets.chomp
     if not_verified(user)
       search_possible(user)
