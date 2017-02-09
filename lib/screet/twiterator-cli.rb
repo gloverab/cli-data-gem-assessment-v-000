@@ -19,7 +19,7 @@ class ScreetCLI
     puts "\nNow, please enter a username."
     puts "There's no need to put the '@' sign, but I won't complain if you do."
     puts "(ex. 'realcarrotfacts' or 'kanyewest')"
-    @user = TwitterUser.new(gets.strip)
+    @user = User.new(gets.strip)
     display_profile
   end
 
@@ -42,7 +42,8 @@ class ScreetCLI
     puts "-To see more of #{self.user.display_name}'s tweets, type 'more.'"
     puts "-To check out a different user's tweets, type 'new'"
     puts "-To learn more about a tweet, simply type the number of the tweet you'd like to learn about."
-    options_response
+    #options_response
+    tweet_response
   end
 
   def display_tweet(index)
@@ -71,21 +72,21 @@ class ScreetCLI
     self.tweet.set_replies
   end
 
-  def options_response
-    answer = gets.strip.upcase
-    if answer == "MORE"
-      self.user.five_more
-      give_options
-    elsif answer == "NEW"
-      new_user_menu
-    elsif answer.to_i > 0
-      display_tweet(answer.to_i)
-    end
-  end
+  # def options_response
+  #   answer = gets.strip.upcase
+  #   if answer == "MORE"
+  #     self.user.five_more
+  #     give_options
+  #   elsif answer == "NEW"
+  #     new_user_menu
+  #   elsif answer.to_i > 0
+  #     display_tweet(answer.to_i)
+  #   end
+  # end
 
   def tweet_response
     answer = gets.strip.upcase
-    if answer == "REPLIES"
+    if answer == "REPLIES" && self.tweet != nil
       show_replies
     elsif answer == "MORE"
       self.user.five_more
@@ -97,6 +98,9 @@ class ScreetCLI
       new_user_menu
     elsif answer.to_i > 0
       display_tweet(answer.to_i)
+    else
+      puts "Uh oh!! I don't know what you're trying to say! Sorry about that."
+      give_options
     end
   end
 
