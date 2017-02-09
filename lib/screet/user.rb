@@ -53,7 +53,7 @@ class User
 
   def redisplay
     self.tweets.each_with_index do |tweet, index|
-      puts "#{(index+1).to_s}. #{tweet.time} -#{"**RETWEET**" if tweet.retweeted?}- #{tweet.content}"
+      puts "#{(index+1).to_s}. #{tweet.date} - #{tweet.time} -#{"**RETWEET**" if tweet.retweeted?}- #{tweet.content}"
       puts " "
     end
   end
@@ -65,7 +65,7 @@ class User
   end
 
   def tweet
-    puts "#{(self.counter + 1).to_s}. #{self.doc.css('.time')[counter].text.strip} -#{"**RETWEET**" if tweets[counter].retweeted?}- #{self.doc.css('.js-tweet-text-container p')[counter].text}\n"
+    puts "#{(self.counter + 1).to_s}. #{self.tweets[self.counter].date} -#{"**RETWEET**" if tweets[counter].retweeted?}- #{self.tweets[self.counter].content}\n"
     puts " "
   end
 
